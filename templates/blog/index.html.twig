@@ -8,14 +8,14 @@
     {% for article in articles %}
         <article>
             <h2>{{ article.title }}</h2>
-            <div class="metadata">Ecrit le {{ article.createdAt | date
-            ('d/m/y') }} à {{ article.createdAt | date('H:i') }} dans 
-            la catégorie Politique</div>
+            <div class="metadata">Written in {{ article.createdAt | date
+            ('d/m/y') }} at {{ article.createdAt | date('H:i') }}</div>
             <div class="content">
                 <img src="{{ article.image }}" alt="">
-                {{ article.content | raw}}
-                <a href="{{ path('blog_show', {'id': article.id}) }}" class="btn btn-primary">lire la suite</a>
+                <br>
+                <a href="{{ path('blog_show', {'id': article.id}) }}" class="btn btn-primary">Read</a>
             </div>
+            <hr>
         </article>
     {% endfor %}
 </section>

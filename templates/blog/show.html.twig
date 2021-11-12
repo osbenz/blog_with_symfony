@@ -3,12 +3,42 @@
 {% block body %}
     <article>
         <h2>{{ article.title }}</h2>
-        <div class="metadata">Ecrit le {{ article.createdAt | date
-        ('d/m/y') }} à {{ article.createdAt | date('H:i') }} dans 
-        la catégorie Politique</div>
+        <div class="metadata">Written in {{ article.createdAt | date
+        ('d/m/y') }} at {{ article.createdAt | date('H:i') }}</div>
         <div class="content">
             <img src="{{ article.image }}" alt="">
+            <br>
             {{ article.content | raw }}
         </div>
     </article>
+
+    {% if app.user %}
+    {% if app.user.username == "MasterUser" %}
+    <a href="{{ path('blog_edit', {'id': article.id}) }}" class="btn btn-primary">Edit</a>
+    {% endif %}
+    {% endif %}
+
+    <section id="comments">
+        <br>
+        <h1>{{ article in article.comments | length }} Comments :</h1>
+        {% for comment in article.comments %}
+             <div class="comment">
+                {{comment.author}} <small>{{ comment.createdAt | date
+                    ('d/m/Y') }} at  {{ comment.createdAt | date('H:i') }}</small>
+                 <br>
+                 {{comment.content | raw}}
+             </div><br><br>
+        {% endfor %}
+
+        {% if app.user %}
+            {{ form_start(commentForm) }}
+            {{ form_row(commentForm.author, {'attr': {
+                'value': app.user.username,
+                'class': 'hidden-row'
+            }}) }}
+            {{ form_row(commentForm.content, {'attr': {'placeholder': "Enter your comment"}}) }}
+            <button type="submit" class="btn btn-success">Comment</button>
+            {{ form_end(commentForm) }}
+        {% endif %}
+    </section>
 {% endblock  %}
